@@ -1,7 +1,7 @@
 {
-    "name": "react-bolt",
+    "name": "bsd-gradient",
     "version": "1.0.0",
-    "description": "⚡ The most simple & robust boilerplate for your React projects.",
+    "description": "...",
     "main": "src/index.js",
     "scripts": {
         "start": "cross-env NODE_ENV=development webpack-dev-server --open",
@@ -20,20 +20,9 @@
         "redux",
         "webpack",
         "jest",
-        "styled-components",
-        "starter",
-        "boilerplate"
+        "styled-components"
     ],
-    "author": "Leonardo Maldonado <leonardomso11@gmail.com>",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/leonardomso/react-bolt.git"
-    },
-    "bugs": {
-        "url": "https://github.com/leonardomso/react-bolt/issues"
-    },
-    "homepage": "https://github.com/leonardomso/react-bolt#readme",
+    "author": "",
     "devDependencies": {
         "@babel/cli": "^7.4.3",
         "@babel/core": "^7.4.3",
@@ -89,13 +78,13 @@
     "dependencies": {
         "axios": "^0.21.1",
         "cross-env": "^6.0.3",
-        "react": "^16.12.0",
-        "react-dom": "^16.12.0",
-        "react-redux": "^7.1.3",
-        "react-router-dom": "^5.1.2",
-        "redux": "^4.0.4",
-        "redux-thunk": "^2.3.0",
-        "styled-components": "^4.4.1"
+        "prop-types": "^15.7.2",
+        "react": "^17.0.2",
+        "react-colorful": "^5.2.2",
+        "react-dom": "^17.0.2",
+        "react-router-dom": "^5.2.0",
+        "styled-components": "^4.4.1",
+        "three": "^0.128.0"
     },
     "jest": {
         "setupFiles": [
