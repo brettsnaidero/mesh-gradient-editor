@@ -3,25 +3,22 @@ import * as THREE from "three";
 import Editor from "./components/editor";
 import { getPatches, fillBufferAttributeByPatches } from "./utils/gradient";
 import { getInitialControlPoints } from "./utils/other";
-import debounce from "./utils/debounce";
-
-const initialDivisionCount = 3;
+import { debounce } from "./utils/debounce";
 
 const App = () => {
+    const [divisionCount, setDivisionCount] = useState(2);
     const gradientMesh = useRef();
     const scene = useRef();
     const renderer = useRef();
     const camera = useRef();
-    const camera2 = useRef();
 
-    const [divisionCount, setDivisionCount] = useState(initialDivisionCount);
     const [controlPointsMatrix, setControlPoints] = useState(() => {
-        const initialPoints = getInitialControlPoints(initialDivisionCount);
+        const initialPoints = getInitialControlPoints(divisionCount);
         return initialPoints;
     });
     const [boundingRect, setBoundingRect] = useState();
 
-    const patchDivCount = 20;
+    const patchDivCount = 20; // Kind of the resolution of the gradient
     const patchVertexCount = (patchDivCount + 1) * (patchDivCount + 1);
     const patchFaceCount = patchDivCount * patchDivCount * 2;
 
@@ -29,13 +26,6 @@ const App = () => {
     const canvasRef = useCallback((canvas) => {
         scene.current = new THREE.Scene();
         camera.current = new THREE.OrthographicCamera(0, 1, 0, 1, 1, 1000);
-        camera2.current = new THREE.PerspectiveCamera(50, 1, 1, 1000);
-
-        camera2.current.position.z = 3;
-        camera2.current.position.x = 0.5;
-        camera2.current.position.y = 0.5;
-        camera2.current.lookAt(0.5, 0.5, 0);
-        scene.current.add(camera2.current);
 
         renderer.current = new THREE.WebGLRenderer({
             canvas,
@@ -94,49 +84,7 @@ const App = () => {
         });
 
         gradientMesh.current = new THREE.Mesh(gradientMeshGeometry, material);
-
-        THREE.StaticNoiseShader = {
-            uniforms: {
-                tDiffuse: { type: "t", value: null },
-                time: { type: "f", value: 0.0 },
-                amount: { type: "f", value: 0.5 },
-                size: { type: "f", value: 4.0 },
-            },
-
-            vertexShader: [
-                "varying vec2 vUv;",
-
-                "void main() {",
-
-                "vUv = uv;",
-                "gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
-
-                "}",
-            ].join("\n"),
-
-            fragmentShader: [
-                "uniform sampler2D tDiffuse;",
-                "uniform float time;",
-                "uniform float amount;",
-                "uniform float size;",
-
-                "varying vec2 vUv;",
-
-                "float rand(vec2 co) {",
-                "return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);",
-                "}",
-
-                "void main() {",
-                "vec2 p = vUv;",
-                "vec4 color = texture2D(tDiffuse, p);",
-                "float xs = floor(gl_FragCoord.x / size);",
-                "float ys = floor(gl_FragCoord.y / size);",
-                "vec4 snow = vec4(rand(vec2(xs * time,ys * time))*amount);",
-                "gl_FragColor = color + snow;", // additive
-                "}",
-            ].join("\n"),
-        };
-
+        
         scene.current.add(gradientMesh.current);
 
         // Show
@@ -192,6 +140,10 @@ const App = () => {
                         setControlPoints={setControlPoints}
                     />
                 )}
+                {/* TODO: Gradient matrix inspector */}
+                <div className="inspector">
+                    {JSON.stringify(controlPointsMatrix)}
+                </div>
             </div>
         </main>
     );

@@ -1,8 +1,6 @@
-import React, { useCallback } from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import { throttle } from "../../utils/debounce";
-
-const tangentDistance = 100;
 
 const SingleTangent = ({
     x,
@@ -11,27 +9,41 @@ const SingleTangent = ({
     setTangent,
     tangent,
     boundingRect,
+    tangentDistance,
 }) => {
     const toScreenSpace = (value) => {
         return value * tangentDistance * (direction ? -1 : 1);
     };
+    
+    const xPos = toScreenSpace(x);
+    const yPos = toScreenSpace(y);
 
     const onDrag = (event) => {
-        const xPosition =
-            event.clientX - boundingRect.x - x * boundingRect.width;
-        const yPosition =
-            event.clientY - boundingRect.y - y * boundingRect.height;
+        const xPosition = (event.clientX - boundingRect.x) / boundingRect.width;
+        const yPosition = (event.clientY - boundingRect.y) / boundingRect.height;
+        
+        console.log(
+            'Position of cursor (out of 1)',
+            x,
+            xPosition,
+            'Y Position',
+            y,
+            yPosition
+        );
 
-        const newX = (xPosition / tangentDistance) * (direction ? -1 : 1);
-        const newY = (yPosition / tangentDistance) * (direction ? -1 : 1);
+        // Determine how far the mouse has moved up/down
+        const deltaX = Math.abs(x - xPosition);
+        const deltaY = Math.abs(y - yPosition);
+
+        console.log(deltaX, deltaY);
+
+        const newX = deltaX / tangentDistance;
+        const newY = deltaY / tangentDistance;
 
         setTangent(tangent, newX, newY);
     };
 
-    const throttledDrag = useCallback(throttle(onDrag, 50), []);
-
-    const xPos = toScreenSpace(x);
-    const yPos = toScreenSpace(y);
+    const throttledDrag = useRef(throttle(onDrag, 1000)).current;
 
     return (
         <button
@@ -58,6 +70,7 @@ SingleTangent.propTypes = {
         x: PropTypes.number.isRequired,
         y: PropTypes.number.isRequired,
     }).isRequired,
+    tangentDistance: PropTypes.number.isRequired,
 };
 
 SingleTangent.defaultProps = {

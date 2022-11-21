@@ -87,10 +87,15 @@ html {
 
 /* Inspector */
 .inspector {
-    max-height: 200px;
+    margin-top: 40px;
+    max-height: 160px;
     background-color: darkslategrey;
     color: white;
     font-family: "Courier New", Courier, monospace;
     font-size: 11px;
+    line-height: 16px;
+    border-radius: 5px;
     padding: 20px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }

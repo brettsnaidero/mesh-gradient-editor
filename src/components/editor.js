@@ -42,6 +42,7 @@ const Editor = ({ boundingRect, setControlPoints, controlPointsMatrix }) => {
         <>
             {selectedPoint && (
                 <div className="sidebar">
+                    {selectedPoint}
                     {/* Colour picker */}
                     <RgbColorPicker
                         r={selectedPointInfo.r}
@@ -49,10 +50,6 @@ const Editor = ({ boundingRect, setControlPoints, controlPointsMatrix }) => {
                         b={selectedPointInfo.b}
                         onChange={setColour}
                     />
-                    {/* TODO: Gradient matrix inspector */}
-                    <div className="inspector">
-                        {JSON.stringify(controlPointsMatrix)}
-                    </div>
                 </div>
             )}
             <div className="control-points">

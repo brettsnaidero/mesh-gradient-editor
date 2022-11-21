@@ -19,20 +19,20 @@ const Tangents = ({
         <>
             {/* Negative */}
             <SingleTangent
-                type="button"
+                tangent="negDir"
                 x={negDir.x}
                 y={negDir.y}
-                tangent="negDir"
+                tangentDistance={100}
                 setTangent={setTangent}
                 boundingRect={boundingRect}
                 direction={false}
             />
             {/* Positive */}
             <SingleTangent
-                type="button"
+                tangent="posDir"
                 x={posDir.x}
                 y={posDir.y}
-                tangent="posDir"
+                tangentDistance={100}
                 setTangent={setTangent}
                 boundingRect={boundingRect}
                 direction
